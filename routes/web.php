@@ -36,13 +36,14 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/posts/{post}', function (Post $post, Comment $comment) {
     $comments = $comment::get();
-    $userId = Auth::id();
-    return view('post', compact('post', 'comments', 'userId'));
+    $user = Auth::user();
+    return view('post', ['post' => $post, 'comments' => $comments, 'user' => $user]);
 })->name('post');
 
 Route::post('/posts/{post}', [RegisteredUserController::class, 'commentAdd'])->name('comments.store');
 Route::post('/dashboard', [RegisteredUserController::class, 'postAdd'])->name('posts.store');
 Route::delete('/posts/{post}', [RegisteredUserController::class, 'postDelete'])->name('posts.destroy');
+Route::delete('/posts/{comment}/delete', [RegisteredUserController::class, 'commentDelete'])->name('comments.destroy');
 
 Route::get('/posts/new', function () {
     return view('postnew');

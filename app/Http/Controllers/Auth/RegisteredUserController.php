@@ -91,4 +91,10 @@ class RegisteredUserController extends Controller
         $post->delete();
         return redirect()->route('dashboard')->with('success', 'Post deleted successfully!');
     }
+
+    public function commentDelete(comment $comment)
+    {
+        $comment->delete();
+        return redirect()->route('dashboard')->with('success', 'Comment deleted successfully!');
+    }
 }

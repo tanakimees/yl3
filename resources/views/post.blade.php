@@ -23,6 +23,13 @@
                         <p class="text-green-500">{{ $comment->poster }}</p>
                         <p class="text-green-500 text-md">{{ $comment->text }}</p>
                         <p class="text-white text-xs">{{ $comment->created_at->format('d F Y') }}</p>
+                        @if($user->type == 'admin')
+                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="button text-black dark:text-white bg-red-500 mt-2" onclick="return confirm('Are you sure you want to delete this comment?')">Delete Comment  {{ $comment->id }}</button>
+                        </form>
+                        @endif
                     </li>
                     @endif
                     @endforeach
@@ -50,7 +57,7 @@
             <p>Please sign in to leave a comment.</p>
             @endauth
 
-            @if($userId == 1)
+            @if($user->type == 'admin')
             <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
